@@ -11,20 +11,16 @@ import {
   updateExperiment,
   deleteExperiment,
 } from "../controllers/experimentController.js";
+import { AppError } from "../utils/AppError.js";
 
 const router = express.Router();
 
 const isAdmin = (req, res, next) => {
-  try {
-    req.user = isAuth(req);
-    if (req.user.role !== "admin")
-      return res
-        .status(403)
-        .json({ success: false, message: "Forbidden! Admins only." });
-    next();
-  } catch (error) {
-    return res.status(401).json({ success: false, message: "Unauthorized." });
+  req.user = isAuth(req);
+  if (req.user.role !== "admin") {
+    throw new AppError("Forbidden! Admins only.", 403);
   }
+  next();
 };
 
 router.get("/", getExperiments);

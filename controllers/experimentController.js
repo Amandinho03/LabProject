@@ -1,4 +1,5 @@
 import { experiments } from "../dummyDB.js";
+import { AppError } from "../utils/AppError.js";
 
 export const getExperiments = (req, res) => {
   return res.status(200).json({ success: true, data: experiments });
@@ -22,15 +23,10 @@ export const updateExperiment = (req, res) => {
   const id = Number(req.params.id);
   const exp = experiments.find((e) => e.id === id);
 
-  if (!exp)
-    return res
-      .status(404)
-      .json({ success: false, message: "Experiment not found!" });
+  if (!exp) throw new AppError("Experiment not found!", 404);
 
   if (req.user.role !== "admin" && req.user.username !== exp.scientist) {
-    return res
-      .status(403)
-      .json({ success: false, message: "Forbidden! You do not own this." });
+    throw new AppError("Forbidden! You do not own this.", 403);
   }
 
   if (req.body.machine) {
@@ -39,8 +35,7 @@ export const updateExperiment = (req, res) => {
   }
 
   if (req.body.status) {
-    if (req.user.role !== "admin")
-      return res.status(403).json({ success: false, message: "Admins only." });
+    if (req.user.role !== "admin") throw new AppError("Admins only.", 403);
     exp.status = req.body.status;
   }
 
@@ -51,8 +46,7 @@ export const deleteExperiment = (req, res) => {
   const id = Number(req.params.id);
   const index = experiments.findIndex((e) => e.id === id);
 
-  if (index === -1)
-    return res.status(404).json({ success: false, message: `Not found!` });
+  if (index === -1) throw new AppError("Not found!", 404);
 
   experiments.splice(index, 1);
   res.status(200).json({ success: true, message: `Experiment removed!` });

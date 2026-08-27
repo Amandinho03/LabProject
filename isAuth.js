@@ -1,24 +1,22 @@
 import pkg from "jsonwebtoken";
+import { AppError } from "./utils/AppError.js";
 const { verify } = pkg;
 
 const isAuth = (req) => {
   const authorization = req.headers["authorization"];
-  if (!authorization) throw new Error("You need to login!");
+  if (!authorization) throw new AppError("You need to login!", 401);
 
   const token = authorization.split(" ")[1];
-  const decoded = verify(token, process.env.ACCESS_TOKEN_SECRET);
-  return decoded;
+  try {
+    return verify(token, process.env.ACCESS_TOKEN_SECRET);
+  } catch (err) {
+    throw new AppError("Invalid or expired token. Please log in.", 401);
+  }
 };
 
 const requireAuth = (req, res, next) => {
-  try {
-    req.user = isAuth(req);
-    next();
-  } catch (error) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Unauthorized! Please log in." });
-  }
+  req.user = isAuth(req);
+  next();
 };
 
 export { isAuth, requireAuth };

@@ -1,6 +1,7 @@
 import { hash, compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { regusers } from "../dummyDB.js";
+import { AppError } from "../utils/AppError.js";
 import {
   createAccessToken,
   createRefreshToken,
@@ -10,56 +11,41 @@ import {
 
 export const registerUser = async (req, res) => {
   const { username, password } = req.body;
-  try {
-    const existing = regusers.find((u) => u.username === username);
-    if (existing) {
-      return res.status(400).json({
-        success: false,
-        message: "Username already taken! Try again.",
-      });
-    }
 
-    const hashedpwd = await hash(password, 10);
-    const newUser = {
-      id: regusers.length + 1,
-      username: username,
-      password: hashedpwd,
-      role: "user",
-    };
-
-    regusers.push(newUser);
-    res
-      .status(200)
-      .json({ success: true, message: `Successfully registered ${username}` });
-  } catch (err) {
-    res.status(500).send("Error while registering, please try again!");
+  const existing = regusers.find((u) => u.username === username);
+  if (existing) {
+    throw new AppError("Username already taken! Try again.", 400);
   }
+
+  const hashedpwd = await hash(password, 10);
+  const newUser = {
+    id: regusers.length + 1,
+    username: username,
+    password: hashedpwd,
+    role: "user",
+  };
+
+  regusers.push(newUser);
+  res
+    .status(200)
+    .json({ success: true, message: `Successfully registered ${username}` });
 };
 
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
-  try {
-    const user = regusers.find((user) => user.username === username);
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: `Invalid credentials!` });
 
-    const isPwdValid = await compare(password, user.password);
-    if (!isPwdValid)
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials!" });
+  const user = regusers.find((user) => user.username === username);
+  if (!user) throw new AppError("Invalid credentials!", 404);
 
-    const accessToken = createAccessToken(user);
-    const refreshToken = createRefreshToken(user);
-    user.refreshToken = refreshToken;
+  const isPwdValid = await compare(password, user.password);
+  if (!isPwdValid) throw new AppError("Invalid credentials!", 400);
 
-    sendRefreshToken(res, refreshToken);
-    sendAccessToken(req, res, accessToken);
-  } catch (error) {
-    res.status(500).send("Error while logging in");
-  }
+  const accessToken = createAccessToken(user);
+  const refreshToken = createRefreshToken(user);
+  user.refreshToken = refreshToken;
+
+  sendRefreshToken(res, refreshToken);
+  sendAccessToken(req, res, accessToken);
 };
 
 export const refreshUserToken = (req, res) => {

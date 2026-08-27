@@ -29,10 +29,19 @@ lab.use("/", configRoutes);
 
 // global error
 lab.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
+  const statusCode = err.statusCode || 500;
+
+  const message = err.isOperational
+    ? err.message
+    : "Internal Server Error! Please try again.";
+
+  if (!err.isOperational) {
+    console.error("CRITICAL ERROR!:", err);
+  }
+
+  res.status(statusCode).json({
     success: false,
-    message: "Internal Server Error! Please try again.",
+    message: message,
   });
 });
 
