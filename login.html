@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login - Central Cancer Imaging Facility</title>
+    <style>
+      /* Base Styles (Consistent with the rest of the site) */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f4f7f6;
+        color: #333;
+      }
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        background-color: #e9ecef;
+        padding: 20px;
+        border-bottom: 1px solid #ccc;
+      }
+      nav a {
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        background: #0056b3;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 50px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        color: #0056b3;
+        margin-top: 0;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background: #28a745; /* Green button for login */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      button:hover {
+        background: #218838;
+      }
+
+      #message {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register">Register</a>
+    </nav>
+
+    <div class="container">
+      <h2>Scientist Login</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" required />
+        </div>
+
+        <button type="submit">Access Secure Portal</button>
+      </form>
+
+      <div id="message"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const usernameInput = document.getElementById("username").value;
+          const passwordInput = document.getElementById("password").value;
+          const messageDiv = document.getElementById("message");
+
+          try {
+            // 1. Send credentials to the backend
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                username: usernameInput,
+                password: passwordInput,
+              }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              // 2. THE MAGIC: Save the JWT to the browser's vault!
+              localStorage.setItem("lab_token", data.accesstoken);
+
+              // 3. Immediately redirect the user to the management page
+              window.location.href = "/manage";
+            } else {
+              // Show error (e.g., "Invalid credentials")
+              messageDiv.style.display = "block";
+              messageDiv.className = "error";
+              messageDiv.innerText =
+                data.error || data.message || "Login failed.";
+            }
+          } catch (error) {
+            console.error("Fetch error:", error);
+            messageDiv.style.display = "block";
+            messageDiv.className = "error";
+            messageDiv.innerText = "Network error. Is the server running?";
+          }
+        });
+    </script>
+  </body>
+</html>
