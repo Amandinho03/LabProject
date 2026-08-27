@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Central Cancer Imaging Facility</title>
+    <style>
+      /* base style */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f4f7f6;
+        color: #333;
+      }
+
+      /* header */
+      header {
+        padding: 100px 30px;
+        text-align: center;
+
+        background-image: url("cancerimage.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        border-bottom: 2px solid #ccc;
+      }
+
+      .header-text-box {
+        background-color: white;
+        display: inline-block;
+        padding: 25px 50px;
+        border-radius: 12px;
+        border: 3px solid #0056b3;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      h1 {
+        color: #0056b3;
+        margin-top: 5px;
+        font-size: 32px;
+        font-weight: 900;
+      }
+      .subtitle {
+        color: #444;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: bold;
+      }
+
+      /* welcome, user box */
+      .status-card {
+        background: white;
+        max-width: 400px;
+        margin: -20px auto 25px auto;
+        position: relative;
+        z-index: 10;
+        padding: 15px 25px;
+        border-radius: 12px;
+        border: 3px solid #0056b3;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        border: 1px solid #e9ecef;
+      }
+      .highlight-name {
+        color: #0056b3;
+      }
+
+      /* navigation bar */
+      nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        background-color: #e9ecef;
+        padding: 20px;
+        border-top: 3px solid black;
+        border-bottom: 3px solid black #ccc;
+      }
+      nav a {
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        background: #0056b3;
+        padding: 12px 24px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      nav a:hover {
+        background: #003d82;
+      }
+
+      /* Switch User */
+      #nav-switch-user {
+        background: #6c757d;
+      }
+      #nav-switch-user:hover {
+        background: #5a6268;
+      }
+
+      /* About Rectangle */
+      #about-section {
+        display: none;
+        background-color: #0056b3;
+        color: white;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        line-height: 1.6;
+      }
+      #about-section h2 {
+        margin-top: 0;
+        color: #fff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-text-box">
+        <div class="subtitle">Homepage</div>
+        <h1>Central Cancer Imaging Facility</h1>
+      </div>
+    </header>
+
+    <div class="status-card" id="user-status-box">
+      Welcome, <span class="highlight-name">guest</span>
+    </div>
+
+    <nav>
+      <a href="/register" id="nav-register">Register</a>
+      <a href="/login" id="nav-login">Login</a>
+      <a id="nav-switch-user" style="display: none">Switch User (Log Out)</a>
+
+      <a href="/manage">Manage/View Requests</a>
+      <a id="about-btn">About</a>
+    </nav>
+
+    <!-- About Section -->
+    <div id="about-section">
+      <h2>About Us</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.
+      </p>
+      <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </div>
+
+    <script>
+      // Auth Check
+      const token = localStorage.getItem("lab_token");
+      const registerBtn = document.getElementById("nav-register");
+      const loginBtn = document.getElementById("nav-login");
+      const switchUserBtn = document.getElementById("nav-switch-user");
+      const statusBox = document.getElementById("user-status-box");
+
+      // decode JWT
+      function parseJwt(token) {
+        try {
+          return JSON.parse(
+            window.atob(
+              token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"),
+            ),
+          );
+        } catch (e) {
+          return {};
+        }
+      }
+
+      if (token) {
+        const userData = parseJwt(token);
+        const username = userData.username || "User";
+
+        // update white box text
+        statusBox.innerHTML = `Welcome, <span class="highlight-name">${username}</span>`;
+
+        // edit the nav buttons
+        registerBtn.style.display = "none";
+        loginBtn.style.display = "none";
+        switchUserBtn.style.display = "block";
+      } else {
+        statusBox.innerHTML = `Welcome, <span class="highlight-name">guest</span>`;
+      }
+
+      // Switch User (logout)
+      switchUserBtn.addEventListener("click", async function (event) {
+        event.preventDefault();
+
+        await fetch("/logout", { method: "POST" });
+        localStorage.removeItem("lab_token");
+        window.location.href = "/login";
+      });
+
+      // Toggle About Box
+      document
+        .getElementById("about-btn")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          const aboutBox = document.getElementById("about-section");
+
+          if (
+            aboutBox.style.display === "none" ||
+            aboutBox.style.display === ""
+          ) {
+            aboutBox.style.display = "block";
+          } else {
+            aboutBox.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>
