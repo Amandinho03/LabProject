@@ -157,12 +157,13 @@
               messageDiv.innerHTML = `Success! Account created. <br> <a href="/login">Click here to log in</a>`;
               document.getElementById("register-form").reset();
             } else {
-              // registration fail
               messageDiv.className = "error";
-              // Zod error handling
-              const errorText =
-                data.error || data.message || "Registration invalid.";
-              messageDiv.innerText = `Error: ${errorText}`;
+              let errorText = "Registration invalid.";
+              if (data.errors && Array.isArray(data.errors)) {
+                errorText = data.errors.map((err) => err.message).join("<br>");
+              } else {
+                errorText = data.error || data.message || errorText;
+              }
             }
           } catch (error) {
             console.error("Fetch error:", error);

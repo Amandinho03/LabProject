@@ -500,7 +500,26 @@
               options.body = JSON.stringify(payload);
             }
 
-            const response = await fetch(url, options);
+            let response = await fetch(url, options);
+
+            // refresh expired access token
+            if (response.status === 401) {
+              const refreshRes = await fetch("/refresh_token", {
+                method: "POST",
+              });
+              const refreshData = await refreshRes.json();
+
+              if (refreshData.accessToken) {
+                // save new token and retry the request
+                localStorage.setItem("lab_token", refreshData.accessToken);
+                options.headers.Authorization = `Bearer ${refreshData.accessToken}`;
+                response = await fetch(url, options);
+              } else {
+                // failed, login again
+                window.location.href = "/login";
+                return;
+              }
+            }
             const data = await response.json();
 
             const msgEl = document.getElementById("status-msg");
