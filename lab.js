@@ -27,7 +27,7 @@ lab.use("/api/experiments", experimentRoutes);
 lab.use("/", authRoutes);
 lab.use("/", configRoutes);
 
-// global error
+// global error handling
 lab.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
 

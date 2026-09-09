@@ -2,279 +2,166 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Manage Requests - CCIF</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background-color: #f4f7f6;
-        color: #333;
-      }
-      nav {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        background-color: #e9ecef;
-        padding: 20px;
-        border-bottom: 1px solid #ccc;
-      }
-      nav a,
-      nav button {
-        text-decoration: none;
-        font-size: 16px;
-        color: white;
-        background: #0056b3;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-weight: bold;
-        border: none;
-        cursor: pointer;
-      }
-      nav button {
-        background: #dc3545;
-      }
-      nav button:hover {
-        background: #c82333;
-      }
-
-      .container {
-        max-width: 700px;
-        margin: 40px auto;
-        background: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-      }
-      h2 {
-        color: #0056b3;
-        margin-top: 0;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 10px;
-      }
-
-      .form-group {
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: column;
-      }
-      label {
-        margin-bottom: 5px;
-        font-weight: bold;
-      }
-      input[type="text"],
-      select {
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .readonly-field {
-        background-color: #e9ecef;
-        color: #6c757d;
-        cursor: not-allowed;
-      }
-
-      .action-selector {
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 5px;
-        border: 1px solid #dee2e6;
-        margin-bottom: 20px;
-      }
-      .radio-group {
-        margin-bottom: 8px;
-        font-size: 16px;
-        display: block;
-      }
-
-      .dynamic-section {
-        display: none;
-        padding: 15px;
-        border: 1px solid #b8daff;
-        background: #e2eafc;
-        border-radius: 5px;
-        margin-bottom: 15px;
-      }
-      .active-section {
-        display: block;
-      }
-
-      .btn-submit {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        color: white;
-        background: #0056b3;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-top: 10px;
-      }
-      .alert {
-        margin-top: 15px;
-        padding: 10px;
-        border-radius: 4px;
-        display: none;
-        font-weight: bold;
-      }
-      .success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-      }
-      .error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
-        background: white;
-      }
-      th,
-      td {
-        border: 1px solid #ccc;
-        padding: 12px;
-        text-align: left;
-      }
-      th {
-        background-color: #0056b3;
-        color: white;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manage requests — TIFR Hyderabad</title>
+    <link rel="icon" href="/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
-    <nav>
-      <a href="/">Home</a>
-      <button id="logout-btn">Logout</button>
-    </nav>
-
-    <div class="container">
-      <h2>Manage Lab Requests</h2>
-
-      <div class="form-group">
-        <label>Scientist Username:</label>
-        <input
-          type="text"
-          id="profile-username"
-          class="readonly-field"
-          readonly
-          disabled
-        />
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand">
+          <img
+            src="/assets/img/tifr-hyderabad-logo.png"
+            alt="TIFR Hyderabad"
+            class="brand-logo"
+          />
+        </a>
+        <nav class="site-nav">
+          <a href="/">Home</a>
+          <button id="logout-btn" class="nav-logout">Log out</button>
+        </nav>
       </div>
+    </header>
 
-      <div class="action-selector">
-        <label class="radio-group"
-          ><input type="radio" name="actionType" value="add" /> Add New
-          Request</label
-        >
-        <label class="radio-group"
-          ><input type="radio" name="actionType" value="edit" /> Edit Existing
-          Request</label
-        >
-
-        <!-- hide from regular user -->
-        <div id="admin-options" style="display: none">
-          <label class="radio-group"
-            ><input type="radio" name="actionType" value="status" /> Modify
-            Status
-          </label>
-          <label class="radio-group"
-            ><input type="radio" name="actionType" value="delete" /> Delete
-            Request
-          </label>
-        </div>
-      </div>
-
-      <form id="unified-form">
-        <!-- add request -->
-        <div id="section-add" class="dynamic-section">
-          <h3>Add Request</h3>
-          <div class="form-group">
-            <label for="add-machine">Select Machine:</label>
-            <select id="add-machine">
-              <option value="">-- Loading... --</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- edit machine -->
-        <div id="section-edit" class="dynamic-section">
-          <h3>Edit Request</h3>
-          <div class="form-group">
-            <label for="edit-id">Select Experiment:</label>
-            <select id="edit-id" class="exp-dropdown">
-              <option value="">-- Loading... --</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="edit-machine">Change Machine To:</label>
-            <select id="edit-machine">
-              <option value="">-- Select an ID first --</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- modify status (admin) -->
-        <div id="section-status" class="dynamic-section">
-          <h3>Modify Status</h3>
-          <div class="form-group">
-            <label for="status-id">Select Experiment:</label>
-            <select id="status-id" class="exp-dropdown">
-              <option value="">-- Loading... --</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="modify-status">Change Status To:</label>
-            <select id="modify-status">
-              <option value="">-- Select an ID first --</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- delete option (admin) -->
-        <div id="section-delete" class="dynamic-section">
-          <h3>Delete Request</h3>
-          <div class="form-group">
-            <label for="delete-id">Select Experiment to Cancel:</label>
-            <select id="delete-id" class="exp-dropdown">
-              <option value="">-- Loading... --</option>
-            </select>
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          id="submit-btn"
-          class="btn-submit"
-          style="display: none"
-        >
-          Execute Action
-        </button>
-      </form>
-      <div id="status-msg" class="alert"></div>
+    <div class="container page-header">
+      <h1>Manage lab requests</h1>
+      <p>
+        Submit a new instrument request, edit one of yours, or review the full
+        queue below.
+      </p>
     </div>
 
-    <!-- dashboard -->
     <div class="container">
-      <h2>Lab Request Dashboard</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Scientist</th>
-            <th>Machine</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
+      <div class="card">
+        <div class="field field-disabled">
+          <label>Scientist username</label>
+          <input type="text" id="profile-username" readonly disabled />
+        </div>
+
+        <fieldset class="action-selector">
+          <legend>What would you like to do?</legend>
+          <label class="radio-group"
+            ><input type="radio" name="actionType" value="add" /> Add a new
+            request</label
+          >
+          <label class="radio-group"
+            ><input type="radio" name="actionType" value="edit" /> Edit an
+            existing request</label
+          >
+
+          <div id="admin-options" style="display: none">
+            <label class="radio-group"
+              ><input type="radio" name="actionType" value="status" />
+              Modify/Update status
+            </label>
+            <label class="radio-group"
+              ><input type="radio" name="actionType" value="delete" /> Delete
+              request
+            </label>
+          </div>
+        </fieldset>
+
+        <form id="unified-form">
+          <div id="section-add" class="dynamic-section">
+            <h3>Add request</h3>
+            <div class="field">
+              <label for="add-machine">Select machine</label>
+              <select id="add-machine">
+                <option value="">-- Loading... --</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="section-edit" class="dynamic-section">
+            <h3>Edit request</h3>
+            <div class="field">
+              <label for="edit-id">Select experiment</label>
+              <select id="edit-id" class="exp-dropdown">
+                <option value="">-- Loading... --</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="edit-machine">Change machine to</label>
+              <select id="edit-machine">
+                <option value="">-- Select an ID first --</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="section-status" class="dynamic-section">
+            <h3>Modify status</h3>
+            <div class="field">
+              <label for="status-id">Select experiment</label>
+              <select id="status-id" class="exp-dropdown">
+                <option value="">-- Loading... --</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="modify-status">Change status to</label>
+              <select id="modify-status">
+                <option value="">-- Select an ID first --</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="section-delete" class="dynamic-section">
+            <h3>Delete request</h3>
+            <div class="field">
+              <label for="delete-id">Select experiment to cancel</label>
+              <select id="delete-id" class="exp-dropdown">
+                <option value="">-- Loading... --</option>
+              </select>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="btn btn-primary btn-block"
+            style="display: none"
+          >
+            Execute action
+          </button>
+        </form>
+        <p id="status-msg" class="alert" style="display: none"></p>
+      </div>
+
+      <div class="card">
+        <h2>Lab request dashboard</h2>
+        <div class="table-wrap">
+          <table style="table-layout: fixed; width: 100%;">
+            <thead>
+              <tr>
+                <th style="width: 15%;">ID</th>
+                <th style="width: 30%;">Scientist</th>
+                <th style="width: 35%;">Machine</th>
+                <th style="width: 20%;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <img src="/assets/img/tifr-icon.png" alt="" class="footer-icon" />
+          <div>
+            <p class="footer-org">
+              Tata Institute of Fundamental Research, Hyderabad
+            </p>
+            <p class="footer-address">
+              36/P, Gopanpally Village, Serilingampally Mandal, Hyderabad,
+              Telangana 500046
+            </p>
+          </div>
+        </div>
+        <p class="footer-meta">Internal instrument booking portal</p>
+      </div>
+    </footer>
 
     <script type="module">
       import { loadDashboard } from "./dashboard.js";
@@ -448,10 +335,12 @@
           btn.style.display = "block";
           btn.innerText =
             currentAction === "delete" || currentAction === "status"
-              ? "Execute Action (Admin)"
-              : "Submit Request";
-          btn.style.background =
-            currentAction === "delete" ? "#dc3545" : "#0056b3";
+              ? "Execute action (admin)"
+              : "Submit request";
+          btn.className =
+            currentAction === "delete"
+              ? "btn btn-danger btn-block"
+              : "btn btn-primary btn-block";
         });
       });
 
@@ -524,7 +413,9 @@
 
             const msgEl = document.getElementById("status-msg");
             msgEl.style.display = "block";
-            msgEl.className = response.ok ? "alert success" : "alert error";
+            msgEl.className = response.ok
+              ? "alert alert-success"
+              : "alert alert-error";
             msgEl.innerText = response.ok
               ? "Success!"
               : `Error: ${data.message || data.error}`;
