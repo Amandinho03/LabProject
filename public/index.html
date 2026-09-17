@@ -2,225 +2,237 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Central Cancer Imaging Facility</title>
-    <style>
-      /* base style */
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background-color: #f4f7f6;
-        color: #333;
-      }
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Science — Research Portal</title>
 
-      /* header */
-      header {
-        padding: 100px 30px;
-        text-align: center;
-
-        background-image: url("cancerimage.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-
-        border-bottom: 2px solid #ccc;
-      }
-
-      .header-text-box {
-        background-color: white;
-        display: inline-block;
-        padding: 25px 50px;
-        border-radius: 12px;
-        border: 3px solid #0056b3;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      }
-
-      h1 {
-        color: #0056b3;
-        margin-top: 5px;
-        font-size: 32px;
-        font-weight: 900;
-      }
-      .subtitle {
-        color: #444;
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-weight: bold;
-      }
-
-      /* welcome, user box */
-      .status-card {
-        background: white;
-        max-width: 400px;
-        margin: -20px auto 25px auto;
-        position: relative;
-        z-index: 10;
-        padding: 15px 25px;
-        border-radius: 12px;
-        border: 3px solid #0056b3;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
-        border: 1px solid #e9ecef;
-      }
-      .highlight-name {
-        color: #0056b3;
-      }
-
-      /* navigation bar */
-      nav {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-        background-color: #e9ecef;
-        padding: 20px;
-        border-top: 3px solid black;
-        border-bottom: 3px solid black #ccc;
-      }
-      nav a {
-        text-decoration: none;
-        font-size: 16px;
-        color: white;
-        background: #0056b3;
-        padding: 12px 24px;
-        border-radius: 5px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      nav a:hover {
-        background: #003d82;
-      }
-
-      /* Switch User */
-      #nav-switch-user {
-        background: #6c757d;
-      }
-      #nav-switch-user:hover {
-        background: #5a6268;
-      }
-
-      /* About Rectangle */
-      #about-section {
-        display: none;
-        background-color: #0056b3;
-        color: white;
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        line-height: 1.6;
-      }
-      #about-section h2 {
-        margin-top: 0;
-        color: #fff;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        padding-bottom: 10px;
-      }
-    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/tailwind-config.js"></script>
   </head>
-  <body>
-    <header>
-      <div class="header-text-box">
-        <div class="subtitle">Homepage</div>
-        <h1>Central Cancer Imaging Facility</h1>
+  <body
+    class="bg-base text-ink font-sans antialiased flex flex-col min-h-screen"
+  >
+    <header class="border-b border-border bg-base shadow-sm">
+      <div
+        class="container mx-auto px-6 py-4 flex items-center justify-between"
+      >
+        <a
+          href="/"
+          class="flex items-center gap-3 text-2xl font-bold no-underline"
+        >
+          <img
+            src="/assets/img/sure.png"
+            alt="Open Science Logo"
+            class="h-24 w-auto"
+          />
+          <span>open <span class="font-light">science</span></span>
+        </a>
+
+        <nav class="flex items-center gap-6 text-sm font-semibold">
+          <a
+            href="/manage"
+            id="nav-manage"
+            hidden
+            class="text-ink-muted hover:text-primary transition-colors"
+            >Manage requests</a
+          >
+          <a
+            href="/register"
+            id="nav-register"
+            class="text-ink-muted hover:text-primary transition-colors"
+            >Register</a
+          >
+          <a
+            href="/login"
+            id="nav-login"
+            class="bg-primary text-white px-5 py-2.5 rounded-md hover:bg-primary-dark transition-colors"
+            >Login</a
+          >
+          <span id="nav-user" hidden class="text-ink-muted"
+            >Signed in as <strong id="nav-username" class="text-ink"></strong
+          ></span>
+          <button
+            id="nav-logout"
+            hidden
+            class="text-red-600 hover:text-red-800 font-semibold transition-colors"
+          >
+            Log out
+          </button>
+        </nav>
       </div>
     </header>
 
-    <div class="status-card" id="user-status-box">
-      Welcome, <span class="highlight-name">guest</span>
-    </div>
+    <main class="flex-grow">
+      <section
+        class="relative py-12 lg:py-20 border-b border-border overflow-hidden flex items-center justify-center min-h-[50vh]"
+      >
+        <img
+          src="/assets/img/drop.jpg"
+          alt="Laboratory Background"
+          class="absolute inset-0 w-full h-full object-cover z-0 opacity-90"
+        />
 
-    <nav>
-      <a href="/register" id="nav-register">Register</a>
-      <a href="/login" id="nav-login">Login</a>
-      <a id="nav-switch-user" style="display: none">Switch User (Log Out)</a>
+        <div class="absolute inset-0 bg-primary-soft/30 z-10"></div>
 
-      <a href="/manage">Manage/View Requests</a>
-      <a id="about-btn">About</a>
-    </nav>
+        <div class="container relative z-20 mx-auto px-6 flex justify-center">
+          <div
+            class="max-w-xl w-full bg-white/40 backdrop-blur-xl px-6 py-10 md:px-10 md:py-12 rounded-3xl shadow-2xl border border-white/60 text-center"
+          >
+            <h1 class="text-3xl lg:text-4xl font-bold mb-4 text-ink">
+              <span>open <span class="font-light">science</span></span> <br />
+              <span
+                class="text-primary-dark text-4xl lg:text-5xl mt-1 inline-block drop-shadow-sm"
+                >Instruments</span
+              >
+              <img
+                src="/assets/img/bla.png"
+                alt="Open Source"
+                class="mx-auto h-24 w-auto"
+              />
+            </h1>
 
-    <!-- About Section -->
-    <div id="about-section">
-      <h2>About Us</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </p>
-      <p>
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </div>
+            <p class="text-base lg:text-lg text-ink-muted mb-8 font-bold">
+              A portal for user members to request instrument-time and track
+              requests.
+            </p>
 
-    <script>
-      // Auth Check
-      const token = localStorage.getItem("lab_token");
-      const registerBtn = document.getElementById("nav-register");
-      const loginBtn = document.getElementById("nav-login");
-      const switchUserBtn = document.getElementById("nav-switch-user");
-      const statusBox = document.getElementById("user-status-box");
+            <a
+              href="/login"
+              id="hero-cta"
+              class="inline-block bg-primary text-white font-semibold px-7 py-3 rounded-md text-base hover:bg-primary-dark shadow-lg transition-all transform hover:-translate-y-0.5"
+            >
+              Sign in to get started
+            </a>
+          </div>
+        </div>
+      </section>
 
-      // decode JWT
-      function parseJwt(token) {
-        try {
-          return JSON.parse(
-            window.atob(
-              token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"),
-            ),
-          );
-        } catch (e) {
-          return {};
-        }
-      }
+      <section class="py-16 lg:py-16">
+        <div
+          class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 items-start"
+        >
+          <div class="space-y-6 text-ink-muted leading-relaxed">
+            <h2 class="text-3xl font-bold text-ink mb-4">Our instruments</h2>
+            <p>
+              The Open Science Lab has a suite of over 30 specialised, cutting-edge facilities, striving to keep at the frontiers of scientic discovery.
+            </p>
+            
+            <p>
+              Gaining access to state-of-the-art laboratory equipment remains a difficult challenge for scientists in under-resourced regions. This is holding science back, creating a knowledge gap between the North and South, and resulting in brain drain. 
+            </p>
+          </div>
 
-      if (token) {
-        const userData = parseJwt(token);
-        const username = userData.username || "User";
+          <div class="flex items-center justify-center mt-2 lg:mt-0">
+            <img 
+              src="/assets/img/ng.jpg" 
+              alt="Scientists collaborating in the lab" 
+              class="w-full brightness-110 h-auto rounded-xl shadow-sm border border-border object-cover"
+            />
+          </div>
 
-        // update white box text
-        statusBox.innerHTML = `Welcome, <span class="highlight-name">${username}</span>`;
+          <aside
+            class="bg-base-soft border border-border rounded-xl p-8 shadow-sm"
+          >
+            <span
+              class="inline-block bg-primary-soft text-primary font-bold text-xs uppercase tracking-wider py-1 px-3 rounded-full mb-4"
+              >Remote Access</span
+            >
+            <h3 class="text-xl font-bold mb-3">Core Facilities</h3>
+            <p class="text-sm text-ink-muted leading-relaxed">
+              Open Science Lab is enabling scientists in
+              under-resourced regions, to access sophisticated scientific
+              equipment without leaving their home country. The scientists also
+              receive training on how to use this equipment remotely.
+            </p>
+          </aside>
+        </div>
+      </section>
 
-        // edit the nav buttons
-        registerBtn.style.display = "none";
-        loginBtn.style.display = "none";
-        switchUserBtn.style.display = "block";
-      } else {
-        statusBox.innerHTML = `Welcome, <span class="highlight-name">guest</span>`;
-      }
+      <section class="bg-base-soft py-16 lg:py-24 border-t border-border">
+        <div class="container mx-auto px-6">
+          <h2 class="text-3xl font-bold text-center text-ink mb-12">
+            How the User portal works
+          </h2>
 
-      // Switch User (logout)
-      switchUserBtn.addEventListener("click", async function (event) {
-        event.preventDefault();
+          <ol class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <li
+              class="bg-base p-8 rounded-xl shadow-sm border border-border text-center"
+            >
+              <span
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary text-white font-bold text-xl rounded-full mb-6"
+                >1</span
+              >
+              <h3 class="text-xl font-bold mb-3">Create an account</h3>
+              <p class="text-ink-muted text-sm">
+                Register with the provided user ID and password to access the
+                portal.
+              </p>
+            </li>
+            <li
+              class="bg-base p-8 rounded-xl shadow-sm border border-border text-center"
+            >
+              <span
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary text-white font-bold text-xl rounded-full mb-6"
+                >2</span
+              >
+              <h3 class="text-xl font-bold mb-3">Request instrument time</h3>
+              <p class="text-ink-muted text-sm">
+                Sign in and submit a request for the specific facility or tool
+                you want to use.
+              </p>
+            </li>
+            <li
+              class="bg-base p-8 rounded-xl shadow-sm border border-border text-center"
+            >
+              <span
+                class="inline-flex items-center justify-center w-12 h-12 bg-primary text-white font-bold text-xl rounded-full mb-6"
+                >3</span
+              >
+              <h3 class="text-xl font-bold mb-3">Track its status</h3>
+              <p class="text-ink-muted text-sm">
+                Follow your request status directly on the dashboard.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
 
-        await fetch("/logout", { method: "POST" });
-        localStorage.removeItem("lab_token");
-        window.location.href = "/login";
-      });
+    <footer class="bg-ink text-white py-6">
+      <div
+        class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6"
+      >
+        <div
+          class="flex flex-col md:flex-row items-center md:items-start gap-5 text-center md:text-left"
+        >
+          <img
+            src="/assets/img/sure.png"
+            alt="Open Science Logo"
+            class="h-24 w-auto brightness-100 invert"
+          />
 
-      // Toggle About Box
-      document
-        .getElementById("about-btn")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          const aboutBox = document.getElementById("about-section");
+          <div class="pt-1">
+            <p class="font-bold text-lg tracking-wide">
+              <span>open <span class="font-light">science</span></span>
+            </p>
+            Labs
+            <p class="text-white/70 text-sm mt-1.5 leading-relaxed">
+              123 Mulholland Drive, Sunset Boulevard
+            </p>
+          </div>
+        </div>
 
-          if (
-            aboutBox.style.display === "none" ||
-            aboutBox.style.display === ""
-          ) {
-            aboutBox.style.display = "block";
-          } else {
-            aboutBox.style.display = "none";
-          }
-        });
-    </script>
+        <div class="flex items-center">
+          <p class="text-sm text-white/70 font-medium">
+            Internal instrument booking portal
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/nav.js"></script>
   </body>
 </html>

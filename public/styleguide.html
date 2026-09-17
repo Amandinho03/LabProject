@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Science — Style Guide</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="/css/components.css" />
+  </head>
+  <body class="bg-base text-ink font-sans antialiased">
+    <header class="border-b border-border bg-base">
+      <div class="container mx-auto px-6 py-10">
+        <p class="text-xs font-semibold uppercase tracking-wider text-primary mb-2">Open Science Research Portal</p>
+        <h1 class="text-4xl font-bold">Style guide</h1>
+        <p class="text-ink-muted mt-2 max-w-2xl">
+          One set of design tokens for index, login, register and manage — sourced from
+          <code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">/js/tailwind-config.js</code>.
+          Every swatch and component on this page renders with that same file, so this document
+          stays accurate as the token file changes.
+        </p>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 space-y-16">
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Color</h2>
+        <p class="text-ink-muted mb-6 max-w-2xl">Brand green plus the neutrals and status colors used across forms and the dashboard.</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-primary"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">primary</p>
+              <p class="text-xs text-ink-muted">#115E28</p>
+            </div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-primary-dark"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">primary-dark</p>
+              <p class="text-xs text-ink-muted">#0a3a18</p>
+            </div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-primary-vibrant"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">primary-vibrant</p>
+              <p class="text-xs text-ink-muted">#3BB54A</p>
+            </div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-primary-soft"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">primary-soft</p>
+              <p class="text-xs text-ink-muted">#dcfce7</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-ink"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">ink</p>
+              <p class="text-xs text-ink-muted">#000000 — headings, high-emphasis text</p>
+            </div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-ink-muted"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">ink-muted</p>
+              <p class="text-xs text-ink-muted">#4b5563 — body copy, helper text</p>
+            </div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-base-soft"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">base-soft</p>
+              <p class="text-xs text-ink-muted">#f5faf6 — section and card backgrounds</p>
+            </div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-20 bg-border"></div>
+            <div class="p-3 bg-base">
+              <p class="text-sm font-semibold">border</p>
+              <p class="text-xs text-ink-muted">#dfe9e1 — every hairline rule</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="rounded-lg overflow-hidden border border-success-border">
+            <div class="h-16 bg-success-bg flex items-center justify-center text-success-text text-sm font-semibold">success</div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-error-border">
+            <div class="h-16 bg-error-bg flex items-center justify-center text-error-text text-sm font-semibold">error</div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-16 bg-danger flex items-center justify-center text-white text-sm font-semibold">danger</div>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-border">
+            <div class="h-16 bg-danger-dark flex items-center justify-center text-white text-sm font-semibold">danger-dark</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Typography</h2>
+        <p class="text-ink-muted mb-6 max-w-2xl">
+          Montserrat, one family, three weights of emphasis. Auth-page quotes are the one deliberate
+          exception: an italic serif pull-quote, styled separately, never used elsewhere.
+        </p>
+        <div class="space-y-4 bg-base-soft border border-border rounded-lg p-6">
+          <p class="text-4xl font-bold">Heading / 36px / bold</p>
+          <p class="text-2xl font-bold">Heading / 24px / bold</p>
+          <p class="text-lg font-semibold">Subheading / 18px / semibold</p>
+          <p class="text-base">Body / 16px / regular — used for paragraph copy across every page.</p>
+          <p class="text-sm text-ink-muted">Helper text / 14px / regular, ink-muted — labels, captions, table meta.</p>
+          <p class="font-serif italic text-lg">"Auth pull-quote / italic serif" — login and register hero only.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Buttons</h2>
+        <p class="text-ink-muted mb-6 max-w-2xl">Primary action, quiet action, destructive action.</p>
+        <div class="flex flex-wrap items-center gap-4">
+          <button class="bg-primary text-white font-semibold px-6 py-3 rounded-md hover:bg-primary-dark transition-colors">Submit request</button>
+          <button class="border border-border text-ink font-semibold px-6 py-3 rounded-md hover:border-primary hover:text-primary transition-colors bg-base">Cancel</button>
+          <button class="bg-danger text-white font-semibold px-6 py-3 rounded-md hover:bg-danger-dark transition-colors">Delete request</button>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Form fields</h2>
+        <p class="text-ink-muted mb-6 max-w-2xl">Label above field, primary focus ring, disabled state for read-only profile fields.</p>
+        <div class="grid md:grid-cols-2 gap-6 max-w-2xl">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold">Select machine</label>
+            <select class="px-3.5 py-2.5 border border-border rounded-md bg-base focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+              <option>Confocal microscope</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="text-sm font-semibold">Scientist username</label>
+            <input disabled value="j.curie" class="px-3.5 py-2.5 border border-border rounded-md bg-base-soft text-ink-muted cursor-not-allowed" />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Status pills</h2>
+        <p class="text-ink-muted mb-6 max-w-2xl">
+          Defined once in <code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">/css/components.css</code>
+          since <code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">dashboard.js</code> builds these
+          with plain DOM calls, outside Tailwind's reach.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span class="status-pill status-pending">Pending</span>
+          <span class="status-pill status-accepted">Accepted</span>
+          <span class="status-pill status-completed">Completed</span>
+          <span class="status-pill status-rejected">Rejected</span>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Cards &amp; surfaces</h2>
+        <p class="text-ink-muted mb-6 max-w-2xl">White card on a soft green page background, one border weight, one shadow.</p>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-base border border-border rounded-lg p-7 shadow-sm">
+            <h3 class="font-semibold mb-2">Standard card</h3>
+            <p class="text-sm text-ink-muted">Used for the manage-page panels and the homepage "Core facilities" aside.</p>
+          </div>
+          <div class="bg-primary-soft border border-primary/20 rounded-md p-5">
+            <h3 class="font-semibold mb-2">Inline form panel</h3>
+            <p class="text-sm text-ink-muted">The tinted panel that appears when a manage-page action is selected.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold mb-1">Rules this refactor enforces</h2>
+        <ul class="list-disc pl-5 space-y-2 text-ink-muted max-w-2xl">
+          <li>One Tailwind config file, <code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">/js/tailwind-config.js</code>, loaded by every page — colors and fonts can no longer drift between pages.</li>
+          <li>Montserrat everywhere; the old per-page mix of Montserrat, Inter and Newsreader is gone.</li>
+          <li><code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">base-soft</code> and <code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">border</code> use the greener values from manage.html site-wide, since they read as more "on brand" than the old neutral grays.</li>
+          <li>Asset paths are always root-relative (<code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">/assets/...</code>), matching how the server actually serves them.</li>
+          <li>The login/register hero image-and-quote logic lives once, in <code class="bg-base-soft border border-border rounded px-1.5 py-0.5 text-sm">/js/auth-hero.js</code>.</li>
+        </ul>
+      </section>
+
+    </main>
+  </body>
+</html>
