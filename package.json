@@ -22,12 +22,25 @@
     "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^10.0.16",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.6.5",
+    "@types/nodemailer": "^8.0.2",
     "autoprefixer": "^10.5.5",
-    "nodemon": "^3.1.14",
+    "nodemon": "^1.14.10",
     "postcss": "^8.5.28",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "nodemon@1.19.4": true
   }
 }

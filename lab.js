@@ -3,10 +3,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 import experimentRoutes from "./routes/experiments.js";
 import authRoutes from "./routes/auth.js";
 import configRoutes from "./routes/configRoutes.js";
+
+import "./observers/NotificationObserver.js";
 
 const lab = express();
 const PORT = process.env.PORT;
@@ -22,10 +25,16 @@ lab.use(
   }),
 );
 
-lab.use(express.static("public", { extensions: ["html"] }));
+lab.use("/old", express.static(path.resolve("public"), { extensions: ["html"] }));
+lab.use(express.static(path.resolve("reacc", "dist")));
+
 lab.use("/api/experiments", experimentRoutes);
 lab.use("/", authRoutes);
 lab.use("/", configRoutes);
+
+lab.get(/.*/, (req, res) => {
+  res.sendFile(path.resolve("reacc", "dist", "index.html"));
+});
 
 // global error handling
 lab.use((err, req, res, next) => {
