@@ -5,11 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node lab.js",
-    "dev": "nodemon lab.js",
-    "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/tailwind.css --watch"
-  },
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "tsx lab.ts",
+  "dev": "tsx watch lab.ts"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

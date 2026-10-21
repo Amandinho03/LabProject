@@ -1,0 +1,7 @@
+node_modules/
+reacc/node_modules/
+dist/
+reacc/dist/
+.env
+*.log
+.DS_Store
