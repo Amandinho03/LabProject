@@ -2,6 +2,7 @@ import express from "express";
 import { requireAuth } from "../isAuth.js";
 import { requirePermission } from "../middlewares/rbac.js";
 import { PERMISSIONS } from "../config/permissions.js";
+import { exportExperiments } from "../controllers/experimentController.js";
 import {
   validate,
   createExpSchema,
@@ -17,6 +18,7 @@ import {
 const router = express.Router();
 
 router.get("/", getExperiments);
+router.get("/export", exportExperiments);
 router.post(
   "/",
   requireAuth,

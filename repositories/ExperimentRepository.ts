@@ -1,47 +1,55 @@
 import { experiments, DBExperiment } from "../dummyDB.js";
 
-export class ExperimentRepository {
-  static async getAll(): Promise<DBExperiment[]> {
-    return Promise.resolve(experiments);
+export interface IExperimentRepository {
+  getAll(): Promise<DBExperiment[]>;
+  getById(id: number | string): Promise<DBExperiment | undefined>;
+  create(experimentData: Omit<DBExperiment, "id">): Promise<DBExperiment>;
+  update(
+    id: number | string,
+    updatedData: Partial<DBExperiment>,
+  ): Promise<DBExperiment | undefined>;
+  delete(id: number | string): Promise<boolean>;
+}
+
+// in-memory implementation
+export class InMemoryExperimentRepository implements IExperimentRepository {
+  async getAll(): Promise<DBExperiment[]> {
+    return experiments;
   }
 
-  static async getById(id: number | string): Promise<DBExperiment | undefined> {
+  async getById(id: number | string): Promise<DBExperiment | undefined> {
     const numericId = Number(id);
-    const exp = experiments.find((e) => e.id === numericId);
-    return Promise.resolve(exp);
+    return experiments.find((e) => e.id === numericId);
   }
 
-  static async findIndex(id: number | string): Promise<number> {
-    const numericId = Number(id);
-    const index = experiments.findIndex((e) => e.id === numericId);
-    return Promise.resolve(index);
-  }
-
-  static async create(experimentData: Omit<DBExperiment, "id">): Promise<DBExperiment> {
-    const newId = experiments.length > 0
+  async create(
+    experimentData: Omit<DBExperiment, "id">,
+  ): Promise<DBExperiment> {
+    const newId =
+      experiments.length > 0
         ? Math.max(...experiments.map((exp) => exp.id)) + 1
         : 1;
 
     const newRecord: DBExperiment = { id: newId, ...experimentData };
     experiments.push(newRecord);
-    
-    return Promise.resolve(newRecord);
+    return newRecord;
   }
 
-  static async update(
+  async update(
     id: number | string,
     updatedData: Partial<DBExperiment>,
   ): Promise<DBExperiment | undefined> {
     const exp = await this.getById(id);
     if (!exp) return undefined;
     Object.assign(exp, updatedData);
-    return Promise.resolve(exp);
+    return exp;
   }
 
-  static async delete(index: number): Promise<void> {
+  async delete(id: number | string): Promise<boolean> {
+    const numericId = Number(id);
+    const index = experiments.findIndex((e) => e.id === numericId);
+    if (index === -1) return false;
     experiments.splice(index, 1);
-    return Promise.resolve();
+    return true;
   }
-
-  
 }

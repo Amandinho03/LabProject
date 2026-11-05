@@ -24,9 +24,17 @@ interface ActionRadioProps {
   className?: string;
 }
 
-function ActionRadio({ value, label, current, onSelect, className = "mb-1.5" }: ActionRadioProps) {
+function ActionRadio({
+  value,
+  label,
+  current,
+  onSelect,
+  className = "mb-1.5",
+}: ActionRadioProps) {
   return (
-    <label className={`flex items-center gap-2 text-[0.95rem] cursor-pointer ${className}`}>
+    <label
+      className={`flex items-center gap-2 text-[0.95rem] cursor-pointer ${className}`}
+    >
       <input
         type="radio"
         name="actionType"
@@ -60,7 +68,10 @@ export default function Manage() {
   const [newStatus, setNewStatus] = useState("");
   const [deleteId, setDeleteId] = useState("");
 
-  const [message, setMessage] = useState<{ text: string; variant: "success" | "error" } | null>(null);
+  const [message, setMessage] = useState<{
+    text: string;
+    variant: "success" | "error";
+  } | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   const loadExperiments = useCallback(async () => {
@@ -104,7 +115,8 @@ export default function Manage() {
     (exp) => isAdmin || exp.scientist === username,
   );
 
-  const findExperiment = (id: string) => experiments.find((e) => String(e.id) === id);
+  const findExperiment = (id: string) =>
+    experiments.find((e) => String(e.id) === id);
 
   const editTarget = findExperiment(editId);
   const machineChoices = editTarget
@@ -356,7 +368,9 @@ export default function Manage() {
                     disabled={!statusTarget}
                     className="mb-0"
                   >
-                    {!statusTarget && <option value="">{PLACEHOLDER_ID}</option>}
+                    {!statusTarget && (
+                      <option value="">{PLACEHOLDER_ID}</option>
+                    )}
                     {statusChoices.map((s) => (
                       <option key={s} value={s}>
                         {s}
@@ -406,9 +420,27 @@ export default function Manage() {
           </div>
 
           <div className="bg-base border border-border rounded-lg p-7 shadow-sm mb-8">
-            <h2 className="font-serif font-semibold text-[1.25rem] mb-3.5">
-              Lab request dashboard
-            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-3.5">
+              <h2 className="font-serif font-semibold text-[1.25rem] m-0">
+                Lab request dashboard
+              </h2>
+              <div className="flex items-center gap-2 text-sm">
+                <a
+                  href="/api/experiments/export?format=csv"
+                  download="proposals.csv"
+                  className="px-3 py-1.5 rounded-md border border-border bg-base-soft hover:bg-primary-soft text-ink font-medium no-underline transition-colors"
+                >
+                  Export CSV
+                </a>
+                <a
+                  href="/api/experiments/export?format=json"
+                  download="proposals.json"
+                  className="px-3 py-1.5 rounded-md border border-border bg-base-soft hover:bg-primary-soft text-ink font-medium no-underline transition-colors"
+                >
+                  Export JSON
+                </a>
+              </div>
+            </div>
             {loadError ? (
               <StatusMessage text={loadError} variant="error" />
             ) : (

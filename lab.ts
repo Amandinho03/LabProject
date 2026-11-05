@@ -3,19 +3,21 @@ import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 import path from "path";
-
 
 import experimentRoutes from "./routes/experiments.js";
 import authRoutes from "./routes/auth.js";
 import configRoutes from "./routes/configRoutes.js";
 
 
+import "./events/registry.js";
 
 const lab = express();
 const PORT = process.env.PORT || 3000;
 
 // MIDDLEWARE
+lab.use(helmet());
 lab.use(cookieParser());
 lab.use(express.json());
 lab.use(express.urlencoded({ extended: true }));
@@ -26,21 +28,16 @@ lab.use(
   }),
 );
 
-// Legacy vanilla frontend
-// lab.use("/old", express.static(path.resolve("public"), { extensions: ["html"] }));
 
-// React frontend
 lab.use(express.static(path.resolve("reacc", "dist")));
 
 lab.use("/api/experiments", experimentRoutes);
 lab.use("/", authRoutes);
 lab.use("/", configRoutes);
 
-
 lab.get(/.*/, (req: Request, res: Response) => {
   res.sendFile(path.resolve("reacc", "dist", "index.html"));
 });
-
 
 interface CustomError extends Error {
   statusCode?: number;
@@ -65,7 +62,7 @@ lab.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// start server
+
 lab.listen(PORT, () => {
   console.log(`Lab Server is listening on http://localhost:${PORT}`);
 });

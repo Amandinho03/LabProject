@@ -1,5 +1,6 @@
 import express from "express";
-import { validate, registerSchema } from "../middlewares/validation.js";
+import rateLimit from "express-rate-limit";
+import { validate, registerSchema, loginSchema } from "../middlewares/validation.js";
 import {
   registerUser,
   loginUser,
@@ -9,8 +10,20 @@ import {
 
 const router = express.Router();
 
-router.post("/api/register", validate(registerSchema), registerUser);
-router.post("/api/login", loginUser);
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, 
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: "Too many login/register attempts. Please try again later.",
+  },
+});
+
+router.post("/api/register", authLimiter, validate(registerSchema), registerUser);
+router.post("/api/login", authLimiter, validate(loginSchema), loginUser);
 router.post("/refresh_token", refreshUserToken);
 router.post("/logout", logoutUser);
 
