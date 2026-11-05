@@ -1,0 +1,42 @@
+import { z, ZodSchema, ZodError } from "zod";
+import { Request, Response, NextFunction } from "express";
+import { MACHINES, STATUSES } from "../config.js";
+
+export const MachineEnum = z.string().refine((val) => MACHINES.includes(val), {
+  message: "Invalid machine selected.",
+});
+
+export const StatusEnum = z.string().refine((val) => STATUSES.includes(val), {
+  message: "Invalid status selected.",
+});
+
+export const createExpSchema = z.object({ machine: MachineEnum });
+export const updateExpSchema = z.object({
+  machine: MachineEnum.optional(),
+  status: StatusEnum.optional(),
+});
+
+export const registerSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username should be at least 3 characters!")
+    .max(20, "Username cannot exceed 20 characters!")
+    .regex(/^[a-zA-Z0-9]+$/, "Only alphanumeric usernames allowed!"),
+  password: z.string().min(5, "Password must be at least 5 characters!"),
+});
+
+export const loginSchema = z.object({
+  username: z.string().min(1, "Username is required!"),
+  password: z.string().min(1, "Password is required!"),
+});
+
+export const validate = (schema: z.ZodTypeAny) => (req: Request, res: Response, next: NextFunction) => {
+  const result = schema.safeParse(req.body);
+  
+  if (!result.success) {
+    return res.status(400).json({ success: false, errors: result.error.issues });
+  }
+  
+  req.body = result.data;
+  next();
+};
